@@ -15,6 +15,8 @@
 
   物体検出モデルの作成方法
 　本棚の画像を作成したらroboflow (https://roboflow.com/) でモデルの作成を行う
+   <img width="1920" height="1280" alt="スクリーンショット (271)" src="https://github.com/user-attachments/assets/75e082c0-e6ad-40ec-ab21-3b1a8aff41b1" />
+
   
 
 
