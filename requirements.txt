@@ -1,0 +1,13 @@
+## セットアップ手順
+
+```bash
+git clone https://github.com/xxx/tosyokanDX.git
+cd tosyokanDX
+
+# 必要なライブラリ
+pip install ultralytics opencv-python numpy pillow
+
+# YomitokuOCR のインストール
+pip install yomitoku
+
+python detect.py
