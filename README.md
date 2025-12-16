@@ -68,9 +68,9 @@ pip install -r requirements.txt
 # 物体検出 + OCR の実行
 python src/main.py
 
----
+```
 
-```md
+
 ---
 
 ## 📚 参考サイト
