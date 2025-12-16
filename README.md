@@ -68,6 +68,24 @@ pip install -r requirements.txt
 # 物体検出 + OCR の実行
 python src/main.py
 
+#仮想空間を使う場合
+
+※ これで **誰が見ても迷いません**。
+
+---
+
+## 🧠 もし「source」を使うとしたら（将来）
+
+### 仮想環境を使う場合（任意・将来）
+
+```bash
+python -m venv venv
+source venv/bin/activate   
+pip install -r requirements.txt
+python src/main.py
+
+
+
 ```
 
 
