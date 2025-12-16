@@ -58,12 +58,18 @@
 ## 🚀 セットアップ手順
 
 ```bash
-git clone https://github.com/<oot11>/tosyokanDX.git
+## 🚀 セットアップ手順
+
+```bash
+git clone https://github.com/oot11/tosyokanDX.git
 cd tosyokanDX
+
 # 必要なライブラリのインストール
 pip install -r requirements.txt
-# モデル学習 / 推論コード 実行
-python detect.py
+
+# 物体検出 + OCR の実行
+python src/main.py
+
 
 ---
 
