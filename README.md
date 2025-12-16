@@ -15,6 +15,7 @@
 
   物体検出モデルの作成方法
 　本棚の画像を作成したらroboflow (https://roboflow.com/) でモデルの作成を行う
+  ラベル名などを設定しアノテーションをする際は右のツール欄からsmart selectを使用すると簡単にアノテーションをすることが出来る
 <img width="1777" height="686" alt="スクリーンショット (271)" src="https://github.com/user-attachments/assets/5134f6d5-2a97-4e41-808e-9ec4cac9b793" />
 
   
@@ -63,3 +64,10 @@ cd tosyokanDX
 pip install -r requirements.txt
 # モデル学習 / 推論コード 実行
 python detect.py
+
+---
+
+##  参考サイト
+https://qiita.com/ShingoMatsuura/items/1a078681c6e370faeeb9
+https://qiita.com/hayato0522/items/57fb179cf2847beeafd5
+https://note.com/diy_smile/n/n63086e9c960a?magazine_key=m6a61077e1220
