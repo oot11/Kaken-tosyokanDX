@@ -1,4 +1,4 @@
-# tosyokanDX
+<img width="1777" height="686" alt="スクリーンショット (271)" src="https://github.com/user-attachments/assets/52738f0b-52e8-40f1-bde4-af41997dcc1d" /># tosyokanDX
 
 図書館DX プロジェクトでは、物体検出を用いて蔵書管理を効率化するためのシステムを構築しています。  
 現時点では物体検出で本の検出し文字認識をするということはできていますがデータベースとの連携機能がありません。  
@@ -15,7 +15,7 @@
 
   物体検出モデルの作成方法
 　本棚の画像を作成したらroboflow (https://roboflow.com/) でモデルの作成を行う
-   <img width="1920" height="1280" alt="スクリーンショット (271)" src="https://github.com/user-attachments/assets/75e082c0-e6ad-40ec-ab21-3b1a8aff41b1" />
+<img width="1777" height="686" alt="スクリーンショット (271)" src="https://github.com/user-attachments/assets/5134f6d5-2a97-4e41-808e-9ec4cac9b793" />
 
   
 
