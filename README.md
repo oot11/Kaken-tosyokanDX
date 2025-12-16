@@ -56,10 +56,6 @@
 - [OpenCV](https://opencv.org/)
 
 ---
-
-## 🚀 セットアップ手順
-
-```bash
 ## 🚀 セットアップ手順
 
 ```bash
@@ -71,12 +67,15 @@ pip install -r requirements.txt
 
 # 物体検出 + OCR の実行
 python src/main.py
-```bash
 
 ---
 
-##  参考サイト
-https://github.com/kotaro-kinoshita/yomitoku
-https://qiita.com/ShingoMatsuura/items/1a078681c6e370faeeb9
-https://qiita.com/hayato0522/items/57fb179cf2847beeafd5
-https://note.com/diy_smile/n/n63086e9c960a?magazine_key=m6a61077e1220
+```md
+---
+
+## 📚 参考サイト
+
+- https://github.com/kotaro-kinoshita/yomitoku
+- https://qiita.com/ShingoMatsuura/items/1a078681c6e370faeeb9
+- https://qiita.com/hayato0522/items/57fb179cf2847beeafd5
+- https://note.com/diy_smile/n/n63086e9c960a?magazine_key=m6a61077e1220
