@@ -1,4 +1,3 @@
-<img width="1777" height="686" alt="スクリーンショット (271)" src="https://github.com/user-attachments/assets/52738f0b-52e8-40f1-bde4-af41997dcc1d" /># tosyokanDX
 
 図書館DX プロジェクトでは、物体検出を用いて蔵書管理を効率化するためのシステムを構築しています。  
 現時点では物体検出で本の検出し文字認識をするということはできていますがデータベースとの連携機能がありません。  
@@ -25,6 +24,7 @@
 - 物体検出で切り出した本の画像を対象に処理
 - Python から YomitokuOCR を使用し、背表紙の文字認識を実施
 - 書名などの文字情報を取得可能
+- 
 
 ---
 
@@ -45,7 +45,7 @@
 
 ---
 
-## 🚀 使用したライブラリ
+## 🖥️　使用したライブラリ
 
 - [Python](https://www.python.org/)
 - [Roboflow](https://roboflow.com/)
@@ -58,7 +58,7 @@
 ## 🚀 セットアップ手順
 
 ```bash
-git clone https://github.com/<あなたのユーザー名>/tosyokanDX.git
+git clone https://github.com/<oot11>/tosyokanDX.git
 cd tosyokanDX
 # 必要なライブラリのインストール
 pip install -r requirements.txt
@@ -68,6 +68,7 @@ python detect.py
 ---
 
 ##  参考サイト
+https://github.com/kotaro-kinoshita/yomitoku
 https://qiita.com/ShingoMatsuura/items/1a078681c6e370faeeb9
 https://qiita.com/hayato0522/items/57fb179cf2847beeafd5
 https://note.com/diy_smile/n/n63086e9c960a?magazine_key=m6a61077e1220
