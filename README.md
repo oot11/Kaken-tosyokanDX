@@ -44,11 +44,11 @@
 
 ## 🚀 使用したライブラリ
 
-- Python  
-- Ultralytics YOLO  
-- Roboflow  
-- YomitokuOCR  
-- OpenCV  
+- [Python](https://www.python.org/)
+- [Roboflow](https://roboflow.com/)
+- [Ultralytics YOLO](https://www.ultralytics.com/)
+- [YomitokuOCR](https://github.com/yomitoku/yomitoku)
+- [OpenCV](https://opencv.org/)
 
 ---
 
