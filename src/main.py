@@ -1,7 +1,7 @@
 import os
 import cv2
-from detector import BookDetector
-from ocr_engine import OCREngine
+from detection import BookDetector
+from ocr import OCREngine
 
 """
 図書館DX: 背表紙検出 & Yomitoku OCR 統合メインスクリプト
