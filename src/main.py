@@ -1,89 +1,148 @@
 import os
 import cv2
-from detection import BookDetector
-from ocr import OCREngine
+import numpy as np
+import subprocess
+from ultralytics import YOLO
 
-"""
-図書館DX: 背表紙検出 & Yomitoku OCR 統合メインスクリプト
-1. YOLOv8 OBBで背表紙を検出し、歪みを補正して切り出し
-2. Yomitoku OCRで縦書き・横書きを解析してテキスト化
-3. 抽出結果と画像を連番フォルダに保存
-"""
+# =============================
+# パス設定（★重要）
+# =============================
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))   # src/
+PROJECT_ROOT = os.path.dirname(BASE_DIR)                # project_root/
 
-# --- パス設定 ---
-# 実行ファイル(src/main.py)の場所を基準にパスを解決
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(BASE_DIR)
-
-# モデルや入出力のパス
 MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "best.pt")
-IMG_PATH = os.path.join(PROJECT_ROOT, "inputs", "hon_tate.jpg")
+IMG_PATH   = os.path.join(PROJECT_ROOT, "inputs", "hon_tate.jpg")
 OUTPUT_DIR = os.path.join(PROJECT_ROOT, "outputs")
+CONF_TH = 0.5
 
-def setup_folder(base_dir):
-    """
-    outputs/hon_1, hon_2... のように重複しない連番フォルダを作成する
-    """
-    os.makedirs(base_dir, exist_ok=True)
+# =============================
+# 出力フォルダ連番作成
+# =============================
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+existing = [d for d in os.listdir(OUTPUT_DIR) if d.startswith("hon_")]
+nums = [int(d.split("_")[1]) for d in existing if d.split("_")[1].isdigit()]
+idx = max(nums) + 1 if nums else 1
+SAVE_DIR = os.path.join(OUTPUT_DIR, f"hon_{idx}")
+os.makedirs(SAVE_DIR, exist_ok=True)
 
-    existing = [d for d in os.listdir(base_dir) if d.startswith("hon_")]
-    nums = [int(d.split("_")[1]) for d in existing if d.split("_")[1].isdigit()]
-    counter = max(nums) + 1 if nums else 1
+print(f"📁 保存先: {SAVE_DIR}")
 
-    path = os.path.join(base_dir, f"hon_{counter}")
-    os.makedirs(path, exist_ok=True)
-    return path
+# =============================
+# ユーティリティ
+# =============================
+def order_points(pts):
+    rect = np.zeros((4, 2), dtype="float32")
+    s = pts.sum(axis=1)
+    rect[0] = pts[np.argmin(s)]
+    rect[2] = pts[np.argmax(s)]
+    diff = np.diff(pts, axis=1)
+    rect[1] = pts[np.argmin(diff)]
+    rect[3] = pts[np.argmax(diff)]
+    return rect
 
-def main():
-    # 1. クラスの初期化
-    save_dir = setup_folder(OUTPUT_DIR)
-    
-    # 検出器（YOLOv8 OBB）
-    detector = BookDetector(MODEL_PATH)
-    
-    # OCRエンジン（Yomitoku）
-    # ※ocr_engine.py側でYomitokuを呼び出すように実装されている前提
-    ocr = OCREngine()
+def run_yomitoku(img):
+    import tempfile
 
-    print(f"--- 処理開始 ---")
-    print(f"使用画像: {IMG_PATH}")
-    print(f"保存先: {save_dir}")
+    if len(img.shape) == 3:
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # 2. 背表紙の検出と切り出し (歪み補正済み画像リストを取得)
-    results, crops = detector.get_crops(IMG_PATH, conf=0.5)
+    h, w = img.shape
 
-    if not crops:
-        print("認識対象が見つかりませんでした。")
-        return
+    # 縦書き対策
+    if h > w:
+        img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
 
-    # 3. OCR実行 & 結果保存
-    results_txt_path = os.path.join(save_dir, "results.txt")
-    
-    with open(results_txt_path, "w", encoding="utf-8") as f:
-        for i, item in enumerate(crops):
-            crop_img = item["image"]
-            conf_val = item["conf"]
+    # OCR向け拡大
+    if w < 150:
+        scale = 150 / w
+        img = cv2.resize(img, None, fx=scale, fy=scale,
+                         interpolation=cv2.INTER_CUBIC)
 
-            # OCR実行（Yomitokuによる解析）
-            text = ocr.extract_text(crop_img)
+    with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as tmp:
+        path = tmp.name
+        cv2.imwrite(path, img)
 
-            # 画像の保存
-            img_name = f"hon{i+1}.jpg"
-            cv2.imwrite(os.path.join(save_dir, img_name), crop_img)
+    try:
+        res = subprocess.run(
+            ["yomitoku", path],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        return res.stdout.strip() if res.stdout.strip() else "[NO TEXT]"
+    finally:
+        os.remove(path)
 
-            # テキスト結果の書き込み
-            line = f"File: {img_name} | Conf: {conf_val:.2f} | Text: {text}\n"
-            f.write(line)
-            
-            print(f"[{i+1}/{len(crops)}] {img_name} 解析完了: {text}")
+# =============================
+# モデルロード
+# =============================
+print("MODEL_PATH:", MODEL_PATH)
+print("IMG_PATH:", IMG_PATH)
 
-    # 4. 全体アノテーション画像の保存（どこを検出したか視覚的に確認用）
-    if results:
-        annotated_img = results[0].plot()
-        cv2.imwrite(os.path.join(save_dir, "annotated_full.jpg"), annotated_img)
+model = YOLO(MODEL_PATH)
+img = cv2.imread(IMG_PATH)
+if img is None:
+    raise FileNotFoundError("❌ 入力画像が読み込めません")
 
-    print(f"--- 完了 ---")
-    print(f"全 {len(crops)} 冊の解析結果を {save_dir} に保存しました。")
+# =============================
+# 推論
+# =============================
+results = model.predict(
+    source=IMG_PATH,
+    imgsz=640,
+    conf=CONF_TH,
+    device="cpu",
+    save=False
+)
 
-if __name__ == "__main__":
-    main()
+# =============================
+# 検出 & OCR
+# =============================
+txt_path = os.path.join(SAVE_DIR, "results.txt")
+file_id = 1
+total = 0
+
+with open(txt_path, "w", encoding="utf-8") as f:
+    for result in results:
+        if result.obb is None:
+            continue
+
+        corners_list = result.obb.xyxyxyxy.cpu().numpy()
+        confs = result.obb.conf.cpu().numpy()
+
+        for corners, conf in zip(corners_list, confs):
+            if conf < CONF_TH:
+                continue
+
+            rect = order_points(corners.astype("float32"))
+            (tl, tr, br, bl) = rect
+
+            W = int(max(np.linalg.norm(br - bl), np.linalg.norm(tr - tl)))
+            H = int(max(np.linalg.norm(tr - br), np.linalg.norm(tl - bl)))
+
+            if W < 10 or H < 10:
+                continue
+
+            dst = np.array([[0,0],[W-1,0],[W-1,H-1],[0,H-1]], dtype="float32")
+            M = cv2.getPerspectiveTransform(rect, dst)
+            warped = cv2.warpPerspective(img, M, (W, H))
+
+            text = run_yomitoku(warped)
+
+            img_name = f"hon{file_id}.jpg"
+            cv2.imwrite(os.path.join(SAVE_DIR, img_name), warped)
+
+            f.write(f"{img_name} | conf={conf:.2f} | {text}\n")
+            print(f"📖 {img_name} → {text}")
+
+            file_id += 1
+            total += 1
+
+# =============================
+# 全体アノテーション
+# =============================
+annotated = results[0].plot()
+cv2.imwrite(os.path.join(SAVE_DIR, "annotated_full.jpg"), annotated)
+
+print(f"\n✅ 完了：{total} 冊解析")
+print(f"📝 OCR結果: {txt_path}")
