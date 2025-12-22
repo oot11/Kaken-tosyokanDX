@@ -48,9 +48,9 @@
 ---
 
 ## 動作確認環境
-- OS：Windows 10 / Ubuntu 22.04
-- Python：3.10
-- GPU：なし（CPU実行）
+- OS： Ubuntu 22.04
+- Python：
+- GPU：なし（あり推奨）
 
 
 ## 🔧 実装方法（概要）
