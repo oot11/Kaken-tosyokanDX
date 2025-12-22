@@ -7,5 +7,3 @@ pip install ultralytics opencv-python numpy pillow
 
 # YomitokuOCR のインストール
 pip install yomitoku
-
-python detect.py
