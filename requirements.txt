@@ -1,6 +1,4 @@
 ## セットアップ手順
-
-```bash
 git clone https://github.com/xxx/tosyokanDX.git
 cd tosyokanDX
 
