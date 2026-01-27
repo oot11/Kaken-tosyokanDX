@@ -16,7 +16,9 @@
 - 本棚画像から本の位置を検出し、1冊ずつ切り出し可能
 ### roboflowの作成方法
 - roboflow.comから開きアカウントを作成する
-- ![Uploading image.png…]()
+- <img width="1459" height="837" alt="Screenshot from 2026-01-27 13-23-49" src="https://github.com/user-attachments/assets/5093adbc-0b99-45d5-925a-1d44133a6495" />
+
+
 
 
   物体検出モデルの作成方法
