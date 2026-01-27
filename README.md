@@ -18,6 +18,7 @@
 - roboflow.comから開きアカウントを作成する
 <img width="1009" height="737" alt="Screenshot from 2026-01-27 13-23-49" src="https://github.com/user-attachments/assets/5093adbc-0b99-45d5-925a-1d44133a6495" />
 - 目的に合わせて変更する　Licensesは変更しない
+- annotation groupはラベル名のこと
 
 
 ---
