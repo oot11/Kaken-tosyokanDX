@@ -14,6 +14,9 @@
 - Roboflow を使用して、本の背表紙のアノテーションを実施
 - Ultralytics の YOLO を用いて物体検出モデルを作成
 - 本棚画像から本の位置を検出し、1冊ずつ切り出し可能
+### roboflowの作成方法
+- roboflow.comから開きアカウントを作成する
+- 
 
   物体検出モデルの作成方法
 　本棚の画像を作成したらroboflow (https://roboflow.com/) でモデルの作成を行う
