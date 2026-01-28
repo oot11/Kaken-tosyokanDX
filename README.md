@@ -20,7 +20,7 @@
 - 目的に合わせて変更する　Licensesは変更しない
 - annotation groupはラベル名のこと
 - toolをtraditionalに
-
+- anotationからアノテーションをしたい画像ファイルを挿入しアノテーションをする
 
 ---
 
