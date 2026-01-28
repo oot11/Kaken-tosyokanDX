@@ -21,6 +21,7 @@
 - annotation groupはラベル名のこと
 - toolをtraditionalに
 - anotationからアノテーションをしたい画像ファイルを挿入しアノテーションをする
+- datasetsから
 
 ---
 
